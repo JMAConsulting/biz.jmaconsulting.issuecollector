@@ -115,7 +115,7 @@ function issuecollector_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
 function issuecollector_civicrm_alterContent(&$content, $context, $tplName, &$object) {
   $show = FALSE;
   $issueCollector = '<script type="text/javascript" src="https://jmaltd.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/atn9bf/b/c/7ebd7d8b8f8cafb14c7b0966803e5701/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-US&collectorId=ca5fb152"></script>';
-  if ($config->userSystem->is_wordpress) {
+  if (CRM_Core_Config::singleton()->userSystem->is_wordpress) {
     $user = wp_get_current_user();
     $allowedRoles = array('administrator', 'site-admins');
     if(array_intersect($allowedRoles, $user->roles )) {
