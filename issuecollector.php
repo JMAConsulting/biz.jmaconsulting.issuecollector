@@ -9,20 +9,6 @@ require_once 'issuecollector.civix.php';
  */
 function issuecollector_civicrm_config(&$config) {
   _issuecollector_civix_civicrm_config($config);
-  $show = FALSE;
-  if ($config->userSystem->is_wordpress) {
-    $user = wp_get_current_user();
-    $allowedRoles = array('administrator', 'site-admins');
-    if(array_intersect($allowedRoles, $user->roles )) {
-      $show = TRUE;
-    }
-  }
-  if ($show) {
-    $issueCollector = '<script type="text/javascript" src="https://jmaltd.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/atn9bf/b/c/7ebd7d8b8f8cafb14c7b0966803e5701/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-US&collectorId=ca5fb152"></script>';
-    CRM_Core_Region::instance('page-body')->add(array(
-      'markup' => $issueCollector,
-    ));
-  }
 }
 
 /**
@@ -119,4 +105,24 @@ function issuecollector_civicrm_caseTypes(&$caseTypes) {
  */
 function issuecollector_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
   _issuecollector_civix_civicrm_alterSettingsFolders($metaDataFolders);
+}
+
+/**
+ * Implementation of hook_civicrm_alterContent
+ *
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_alterContent
+ */
+function issuecollector_civicrm_alterContent(&$content, $context, $tplName, &$object) {
+  $show = FALSE;
+  $issueCollector = '<script type="text/javascript" src="https://jmaltd.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/atn9bf/b/c/7ebd7d8b8f8cafb14c7b0966803e5701/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-US&collectorId=ca5fb152"></script>';
+  if ($config->userSystem->is_wordpress) {
+    $user = wp_get_current_user();
+    $allowedRoles = array('administrator', 'site-admins');
+    if(array_intersect($allowedRoles, $user->roles )) {
+      $show = TRUE;
+    }
+  }
+  if ($show) {
+    $content .= $issueCollector;
+  }
 }
